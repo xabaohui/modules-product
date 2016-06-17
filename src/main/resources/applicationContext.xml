@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/product">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/xabaohui/modules/product/bean/ProductProp.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/ProductPropDefine.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/ProductLabelRelation.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/Category.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/ProductSku.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/Label.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/Product.hbm.xml</value>
+				<value>com/xabaohui/modules/product/bean/Model.hbm.xml</value></list>
+		</property></bean>
+	<bean id="ProductPropDAO" class="com.xabaohui.modules.product.daoImpl.ProductPropDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProductPropDefineDAO"
+		class="com.xabaohui.modules.product.daoImpl.ProductPropDefineDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProductLabelRelationDAO"
+		class="com.xabaohui.modules.product.daoImpl.ProductLabelRelationDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CategoryDAO" class="com.xabaohui.modules.product.daoImpl.CategoryDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProductSkuDAO" class="com.xabaohui.modules.product.daoImpl.ProductSkuDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="LabelDAO" class="com.xabaohui.modules.product.daoImpl.LabelDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProductDAO" class="com.xabaohui.modules.product.daoImpl.ProductDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ModelDao" class="com.xabaohui.modules.product.daoImpl.ModelDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="productBO" class="com.xabaohui.modules.product.bo.ProductBO">
+		<property name="productDao" ref="ProductDAO"></property>
+		<property name="productLabelRelationDao" ref="ProductLabelRelationDAO"></property>
+		<property name="labelDao" ref="LabelDAO"></property>
+		<property name="categoryDao" ref="CategoryDAO"></property>
+		<property name="productPropDefineDao" ref="ProductPropDefineDAO"></property>
+		<property name="productPropDao" ref="ProductPropDAO"></property>
+		<property name="productSkuDao" ref="ProductSkuDAO"></property>
+		<property name="modelDao" ref="ModelDao"></property>
+	</bean>
+	<bean id="productService" class="com.xabaohui.modules.product.service.ProductService">
+		<property name="productBO" ref="productBO"></property>
+	</bean>
+	</beans>
